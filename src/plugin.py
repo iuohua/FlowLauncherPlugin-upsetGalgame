@@ -5,6 +5,12 @@ from flowlauncher import FlowLauncher
 
 class UpsetGalgame(FlowLauncher):
     def query(self, param: str = "") -> list:
+        if not param:
+            return [
+                {
+                    "Title": "请输入你要搜索的游戏"
+                }
+            ]
         rep = requests.get(f"https://www.shinnku.com/api/search?q={param}")
         if rep.status_codes != 200:
             return [
