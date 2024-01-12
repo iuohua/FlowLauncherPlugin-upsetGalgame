@@ -8,7 +8,8 @@ class UpsetGalgame(FlowLauncher):
         if not param:
             return [
                 {
-                    "Title": "请输入你要搜索的游戏"
+                    "Title": "请输入你要搜索的游戏",
+                    "icoPath": "images/search.png"
                 }
             ]
         rep = requests.get(f"https://www.shinnku.com/api/search?q={param}")
@@ -17,6 +18,7 @@ class UpsetGalgame(FlowLauncher):
                 {
                     "Title": "无法获取搜索结果",
                     "subTitle": f"服务器返回： {rep.status_code}",
+                    "icoPath": "images/fail.png"
                 }
             ]
         results = rep.json()
@@ -25,7 +27,8 @@ class UpsetGalgame(FlowLauncher):
                 {
                     
                     "Title": "未搜索到相关游戏",
-                    "subTitle": "请尝试换个关键词进行搜索"
+                    "subTitle": "请尝试换个关键词进行搜索",
+                    "icoPath": "images/fail.png"
                 }
             ]
         query_result = []
@@ -39,7 +42,8 @@ class UpsetGalgame(FlowLauncher):
                     "jsonRPCAction": {
                         "method": "open_url",
                         "parameters": [f"https://www.shinnku.com/api/download{name}"]
-                    }
+                    },
+                    "icoPath": "images/zip.png"
                 }
             )
         return query_result

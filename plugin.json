@@ -4,7 +4,7 @@
     "Name":"UpsetGalgame",
     "Description":"Search galgame on shinnku.com",
     "Author":"luohua",
-    "Version":"0.1.0",
+    "Version":"0.1.1",
     "Language":"python",
     "Website":"https://github.com/iuohua/FlowLauncherPlugin-upsetGalgame",
     "IcoPath": "favicon.ico",
