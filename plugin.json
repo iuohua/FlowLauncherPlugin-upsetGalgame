@@ -1,0 +1,13 @@
+{
+    "ID":"",
+    "ActionKeyword":"shinnku",
+    "Name":"UpsetGalgame",
+    "Description":"Search galgame on shinnku.com",
+    "Author":"luohua",
+    "Version":"0.1.0",
+    "Language":"python",
+    "Website":"",
+    "IcoPath": "favicon.ico",
+    "ExecuteFileName":"main.py"
+  }
+  

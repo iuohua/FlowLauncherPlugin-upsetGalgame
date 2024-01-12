@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "upsetgal"
+version = "0.1.0"
+description = "A FlowLauncher plugin for searching galgame on shinnku.com"
+authors = ["luohua"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31.0"
+flowlauncher = "^0.2.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.12.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
