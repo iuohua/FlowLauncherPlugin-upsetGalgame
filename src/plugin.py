@@ -12,7 +12,7 @@ class UpsetGalgame(FlowLauncher):
                 }
             ]
         rep = requests.get(f"https://www.shinnku.com/api/search?q={param}")
-        if rep.status_codes != 200:
+        if rep.status_code != 200:
             return [
                 {
                     "Title": "无法获取搜索结果",
