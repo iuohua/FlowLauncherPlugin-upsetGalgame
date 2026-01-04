@@ -1,5 +1,9 @@
 import requests
 import webbrowser
+import os
+from urllib.parse import urljoin
+
+from lxml import etree  # type: ignore[attr-defined]
 from flowlauncher import FlowLauncher
 
 
@@ -12,7 +16,7 @@ class UpsetGalgame(FlowLauncher):
                     "icoPath": "images/search.png"
                 }
             ]
-        rep = requests.get(f"https://www.shinnku.com/api/search?q={param}")
+        rep = requests.get(f"https://www.shinnku.com/search?q={param}")
         if rep.status_code != 200:
             return [
                 {
@@ -21,7 +25,29 @@ class UpsetGalgame(FlowLauncher):
                     "icoPath": "images/fail.png"
                 }
             ]
-        results = rep.json()
+        html = rep.text
+        tree = etree.HTML(html)
+        
+        items = tree.xpath("//div[contains(concat(' ', normalize-space(@class), ' '), ' p-2 ')]")
+        results = []
+        for it in items:
+            a_nodes = it.xpath('.//a')
+            if not a_nodes:
+                continue
+            a = a_nodes[0]
+            href = a.get('href') or ''
+            url = urljoin(rep.url, href)
+            
+            raw_name = (a.text or '').strip()
+            name = os.path.splitext(raw_name)[0]
+            
+            translated_texts = [t.strip() for t in it.xpath(".//div[contains(concat(' ', normalize-space(@class), ' '), ' p-6 ')]//span/text()") if t.strip()]
+            translated = translated_texts[0] if translated_texts else ''
+            
+            size_texts = [t.strip() for t in it.xpath(".//div[contains(concat(' ', normalize-space(@class), ' '), ' p-6 ')]//text()") if t.strip()]
+            size = size_texts[-1] if size_texts else ''
+            
+            results.append({"url": url, "name": name, "size": size, "translated": translated})
         if len(results) == 0:
             return [
                 {
@@ -35,13 +61,16 @@ class UpsetGalgame(FlowLauncher):
         for i in results:
             name = i["name"]
             size = i["size"]
+            translated = i.get("translated", "")
+            url = i.get("url", "")
+            sub = f"类型: {translated} | 文件大小: {size}" if translated else f"文件大小: {size}"
             query_result.append(
                 {
                     "Title": name,
-                    "subTitle": f"文件大小: {size}",
+                    "subTitle": sub,
                     "jsonRPCAction": {
                         "method": "open_url",
-                        "parameters": [f"https://www.shinnku.com/api/download{name}"]
+                        "parameters": [url]
                     },
                     "icoPath": "images/zip.png"
                 }
