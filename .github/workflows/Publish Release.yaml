@@ -34,8 +34,9 @@ jobs:
           pip install -r ./requirements.txt -t ./lib
       - name: Create package
         run: |
-          $exclude = @('.git*', '.github', 'poetry.lock', 'pyproject.toml', '.venv', , 'test.py')
-          Compress-Archive -Path . -DestinationPath ShinnkuGalgamePlugin.zip -Force
+          $exclude = @('.git', '.github', 'poetry.lock', 'pyproject.toml', '.venv', 'test.py')
+          $items = Get-ChildItem -Path . -Force | Where-Object { $exclude -notcontains $_.Name } | ForEach-Object { $_.FullName }
+          Compress-Archive -Path $items -DestinationPath ShinnkuGalgamePlugin.zip -Force
       - name: Publish
         if: success()
         uses: softprops/action-gh-release@v1
